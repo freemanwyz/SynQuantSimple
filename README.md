@@ -4,7 +4,7 @@ This repository provides a fork of the synapse quantification tool SynQuant that
 It only works with single-channel images.
 However, this makes it easier to integrate into other software tools in the Fiji ecosystem, like [SynBot](https://github.com/Eroglu-Lab/Syn_Bot).
 
-For more details, please visit the main [repo](https://github.com/yu-lab-vt/SynQuant) of SynQuant.
+For more details, please visit the [main repo of SynQuant](https://github.com/yu-lab-vt/SynQuant).
 
 ## Batch processing
 For processing large amounts of data, you may wish to write some scripts in ImageJ. Another choice is to call SynQuant Java classes directly from MATLAB. An example is given [here](https://github.com/freemanwyz/SynQuant_MATLAB_Java). Note that this only contains a subset of the features of the Fiji plug-in, and does not provide a GUI. For a smaller amount of images, it is better to use the Fiji plug-in.
