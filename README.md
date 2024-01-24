@@ -1,16 +1,16 @@
-# SynQuant, with some extra functions
+# SynQuant for batch processing in ImageJ
 
-This repository provides a fork of the synapse quantification tool SynQuant that provides a simplified command, "SynQuantSimple".
+This repository extends the SynQuant Fiji plugin with two additional commands, "SynQuantSimple" and "SynQuantBatch".
 It only works with single-channel images.
-However, this makes it easier to integrate into other software tools in the Fiji ecosystem, like [SynBot](https://github.com/Eroglu-Lab/Syn_Bot).
-For more details, please visit the [main repo of SynQuant](https://github.com/yu-lab-vt/SynQuant).
+However, this makes it easier to integrate into other software tools in the Fiji ecosystem, like [SynBot](https://github.com/Eroglu-Lab/Syn_Bot), which has its own functions to merge results from different channels.
+For more details about SynQuant, please visit the [main repo](https://github.com/yu-lab-vt/SynQuant).
 
 ## SynQuant for single channel
 This is the simplified version that processes a single channel. We support 3D images with multiple z-slices.
-SynQuant will automatically read the current image as input.
+SynQuant will automatically read the current image as input. Users will be asked to set parameters and adjust z-scores after initial detection.
 
 ## SynQuant for batch processing
-This version allows using a configuration file as input to run SynQuant in batch.
+This version allows using a configuration file as input to run SynQuant in batch. User interaction is not needed.
 
 For example, in ImageJ scripts, for each current image, use
 ```
