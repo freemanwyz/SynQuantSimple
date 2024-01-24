@@ -6,8 +6,20 @@ However, this makes it easier to integrate into other software tools in the Fiji
 
 For more details, please visit the [main repo of SynQuant](https://github.com/yu-lab-vt/SynQuant).
 
-## Batch processing
-For processing large amounts of data, you may wish to write some scripts in ImageJ. Another choice is to call SynQuant Java classes directly from MATLAB. An example is given [here](https://github.com/freemanwyz/SynQuant_MATLAB_Java). Note that this only contains a subset of the features of the Fiji plug-in, and does not provide a GUI. For a smaller amount of images, it is better to use the Fiji plug-in.
+## SynQuant for single channel
+This is the simplified version that process a single channel. We support 3D iamges with multiple z-slices.
+SynQuant will automatically read the current image as input.
+
+## SynQuant for batch processing
+This version allows using a configuration file as input to run SynQuant in batch.
+
+For example, in ImageJ scripts, for each current image, use
+```
+run("SynQuantBatch", "C:\\param.txt");
+```
+
+## Other choices for batch processing
+For processing large amounts of data, another choice is to call SynQuant Java classes directly from MATLAB. An example is given [here](https://github.com/freemanwyz/SynQuant_MATLAB_Java). Note that this only contains a subset of the features of the Fiji plug-in, and does not provide a GUI. For a smaller amount of images, it is better to use the Fiji plug-in.
 
 You may also try to call SynQuant using the Python-ImageJ interface [PyImageJ](https://github.com/imagej/pyimagej), but we have not tested that yet.
 
