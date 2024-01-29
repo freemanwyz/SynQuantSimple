@@ -25,6 +25,7 @@ MaxSize=200
 minFill=0.5  
 maxWHRatio=4
 zAxisMultiplier=1
+noiseStd=20
 ```
 
 The meaning of these parameters can be found in the documentation of SynQuant.
