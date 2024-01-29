@@ -1,0 +1,7 @@
+zscore_thres=10
+MinSize=10
+MaxSize=100
+minFill=0.5  
+maxWHRatio=4
+zAxisMultiplier=1
+noiseStd=20
