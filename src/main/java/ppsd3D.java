@@ -24,6 +24,7 @@ public class ppsd3D {
 	protected int width; //image width
 	protected int height; //image height
 	public fastppsdcore3D ppsd_main;
+
 	public ppsd3D(short[][] imArray, int inwidth, int inheight, double vox_x, paraP3D p, paraQ3D q) {
 		
 		/*** STEP 1. Data preparation*******/
@@ -76,11 +77,11 @@ public class ppsd3D {
 				}
 			}
 			IM.getNoiseRobust(stack4noiseEst,  q); // the noise distribution has been saved in q
+			q.var = q.varRatioBased; // directly use a estimated noise variance
 		}
 		/***choice 1: do stabilization***/
 		//tmpGt = IM.getNoiseVSTwithAlpha(tmpG,  q);
 		/***choice 2: no stabilization***/
-		q.var = q.varRatioBased; // directly use a estimated noise variance
 		tmpGt = tmpG;
 		
 		long endTime1=System.nanoTime();
@@ -98,14 +99,11 @@ public class ppsd3D {
 		/*** STEP 3. start ppsd for synapse detection *
 		 * key functions: ppsd_core3D and fastppsdcore3D
 		 * *******/
-		//BasicMath mBM = new BasicMath();
-		//paraP3D p = new paraP3D(infdr, inzscore,(int)mBM.matrix2DMin(imArray),(int)mBM.matrix2DMax(imArray),(int)MinSize, (int)MaxSize);
-		//ppsd start
-		boolean [][][] kMask = new boolean[zSlice][height][width];
+//		boolean [][][] kMask = new boolean[zSlice][height][width];
 		for (int i = 0; i < zSlice; i++)
-			for (int j = 0; j < height; j++)
-				for (int k = 0; k < width; k++)
-					kMask[i][j][k] = true;
+//			for (int j = 0; j < height; j++)
+//				for (int k = 0; k < width; k++)
+//					kMask[i][j][k] = true;
 
 			/*Fast version of PPSD(No zscore updating)*/
 			startTime1=System.nanoTime();
@@ -113,48 +111,4 @@ public class ppsd3D {
 			endTime1=System.nanoTime();
 			System.out.println("Running time: "+(endTime1-startTime1)/1e9); 
 	}
-	
-	/*public void DisplayROI(){
-		int[][] roi_pt1 = new int[nSyn0][2]; //larger than enough
-		long [] roi_size = new long[nSyn0];
-		for(int i = 0; i<height;i++){
-			for(int j = 0; j<width;j++){
-				int tmp = SynR1Idx[i][j];
-				if(tmp!=0){
-					roi_pt1[tmp-1][0] = i;
-					roi_pt1[tmp-1][1] = j;
-					roi_size[tmp-1] = roi_size[tmp-1]+1;
-				}
-			}
-		}
-		String imtitle = "";
-		ImagePlus newimp = NewImage.createByteImage (imtitle, width, height, 1,
-				NewImage.FILL_WHITE);
-		ImageProcessor impNP = newimp.getProcessor(); 
-		for(int i = 0; i<height;i++){
-			for(int j = 0; j<width;j++){
-				impNP.putPixel(j,i,SynR1Idx[i][j]);
-			}
-		}
-		ImageStack impstack = newimp.getStack();
-		// Generate roimanager
-		ByteProcessor ip = (ByteProcessor)impstack.getProcessor(1).convertToByte(true);
-		RoiManager manager = new RoiManager();
-		int[] roi2fiu = new int[nSyn0];
-		int roi_cnt = 0;
-		double wandVal = 0.01;
-		for(int i=0;i<nSyn0;i++){
-			roi2fiu[roi_cnt] = i;
-			roi_cnt++;
-			Wand w = new Wand(ip);
-			w.autoOutline(roi_pt1[i][1],roi_pt1[i][0],wandVal,Wand.EIGHT_CONNECTED); 
-			if (w.npoints>0) { // we have an roi from the wand... 
-				Roi roi = new PolygonRoi(w.xpoints, w.ypoints, w.npoints, Roi.TRACED_ROI);
-				imp.setRoi(roi);
-				manager.addRoi(roi);
-			}
-		}
-		manager.runCommand("show all with labels");
-		manager.setSize(300, 400);
-	}*/
 }

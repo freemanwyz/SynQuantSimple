@@ -36,7 +36,7 @@ public class SynQuantBatch implements PlugIn {
 	protected double fdr = 0.05; // fdr control threshold 
 	protected double zscore_thres = 0;
 	protected int MinSize,MaxSize; // synapse size range
-	protected double minFill, maxWHRatio;
+	protected double minFill, maxWHRatio, noiseStdUser;
 	protected ImagePlus outputImp1=null; // detection results output
 	int [][][][] synIdx;
 	double [][][][] synZscore;
@@ -50,9 +50,13 @@ public class SynQuantBatch implements PlugIn {
 		minFill = 0.5;
 		maxWHRatio = 4;
 		zAxisMultiplier = 1;
+		noiseStdUser = 0;
 
 		String file_name = "";
 		file_name = Macro.getOptions();
+
+		// FIXME: debug
+//		file_name = "C:\\Users\\yzwang\\proj\\Java\\data\\param.txt";
 
 		// C:\\Users\\yzwang\\proj\\Java\\data\\param.txt
 		if(file_name == null) {
@@ -91,6 +95,9 @@ public class SynQuantBatch implements PlugIn {
 					if (Objects.equals(arrOfStr[0], "zAxisMultiplier")) {
 						zAxisMultiplier = Float.parseFloat(arrOfStr[1]);
 					}
+					if (Objects.equals(arrOfStr[0], "noiseStd")) {
+						noiseStdUser = Float.parseFloat(arrOfStr[1]);
+					}
 					line = reader.readLine();
 				}
 				reader.close();
@@ -99,7 +106,7 @@ public class SynQuantBatch implements PlugIn {
 			e.printStackTrace();
 		}
 
-		System.out.printf("%f, %d, %d, %f, %f, %f\n", zscore_thres, MinSize, MaxSize, minFill, maxWHRatio, zAxisMultiplier);
+		System.out.printf("%f, %d, %d, %f, %f, %f %f\n", zscore_thres, MinSize, MaxSize, minFill, maxWHRatio, zAxisMultiplier, noiseStdUser);
 
 		impVec = new ImagePlus[1]; // we only care two channels: pre- and post-synaptic channe
 		impVec[0] = WindowManager.getCurrentImage();
@@ -134,6 +141,11 @@ public class SynQuantBatch implements PlugIn {
             zSlice = imp.getNSlices();
             width = imp.getWidth();
             height = imp.getHeight();
+
+			if (noiseStdUser > 0) {
+				q.var = noiseStdUser * noiseStdUser;
+			}
+
             if (q.NumChannelProcessed == 0) {
                 q.synZscore = new double[timePts][zSlice][height][width];
                 synIdx = new int[timePts][zSlice][height][width];
@@ -260,7 +272,7 @@ public class SynQuantBatch implements PlugIn {
 		new ImageJ();
 
 		// open the Clown sample
-		ImagePlus image = IJ.openImage("C:\\Users\\yzwang\\proj\\Java\\data\\example synapse.tif");
+		ImagePlus image = IJ.openImage("C:\\Users\\yzwang\\proj\\Java\\data\\2019April4 - Cx ACM - 1_oir_corrected-1.tif (green).tif");
 		//C2-3-weak-z_Maximum intensity projection.tif");
 		image.show();
 
